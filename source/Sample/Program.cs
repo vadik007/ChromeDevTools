@@ -75,22 +75,24 @@ namespace MasterDevs.ChromeDevTools.Sample
                     Console.WriteLine("NavigateResponse: " + navigateResponse.Id);
                     Thread.Sleep(3000);
 
-                    foreach (var id in frameIds)
-                        chromeSession.SendAsync(new SetDocumentContentCommand()
-                        {
-                            FrameId = id,
-                            Html = "Hello"
-                        });
+                    var sendAsync = chromeSession.SendAsync(new SetDocumentContentCommand() { FrameId = frameIds.Last(), Html = "Hello" });
+
+                    //foreach (var id in frameIds)
+                    //    chromeSession.SendAsync(new SetDocumentContentCommand()
+                    //    {
+                    //        FrameId = id,
+                    //        Html = "Hello"
+                    //    });
                 }
 
-                    //var SetDocumentContentResponce = chromeSession.SendAsync(new SetDocumentContentCommand()
-                    //    {
-                    //        FrameId = frameid,
-                    //        Html = "Hello"
-                    //    })
-                    //.Result;
-                    //Console.WriteLine("GetDocumentCommand: " + navigateResponse);
-                    Console.ReadLine();
+                //var SetDocumentContentResponce = chromeSession.SendAsync(new SetDocumentContentCommand()
+                //    {
+                //        FrameId = frameid,
+                //        Html = "Hello"
+                //    })
+                //.Result;
+                //Console.WriteLine("GetDocumentCommand: " + navigateResponse);
+                Console.ReadLine();
             }
             catch (Exception e)
             {
