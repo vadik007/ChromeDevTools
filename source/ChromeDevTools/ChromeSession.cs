@@ -3,10 +3,13 @@ using MasterDevs.ChromeDevTools.Serialization;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using WebSocket4Net;
+using DataReceivedEventArgs = WebSocket4Net.DataReceivedEventArgs;
 
 namespace MasterDevs.ChromeDevTools
 {
@@ -61,8 +64,10 @@ namespace MasterDevs.ChromeDevTools
             _openEvent.Reset();
 
             _webSocket = new WebSocket(_endpoint);
+            //_webSocket.Proxy = new HttpConnectProxy(new IPEndPoint(IPAddress.Loopback, 8888));
             _webSocket.EnableAutoSendPing = false;
             _webSocket.Opened += WebSocket_Opened;
+            _webSocket.MessageReceived += (sender, args) => Console.WriteLine("MR: " + args.Message);
             _webSocket.MessageReceived += WebSocket_MessageReceived;
             _webSocket.Error += WebSocket_Error;
             _webSocket.Closed += WebSocket_Closed;
@@ -225,6 +230,7 @@ namespace MasterDevs.ChromeDevTools
             throw new Exception("Don't know what to do with response: " + e.Data);
         }
 
+        [DebuggerHidden]
         private void WebSocket_Error(object sender, SuperSocket.ClientEngine.ErrorEventArgs e)
         {
             throw e.Exception;
